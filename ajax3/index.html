@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Mahasiswa</title>
+        <script type="text/javascript" src="jquery-3.5.1.min.js"></script>
+        <style>
+            form {
+                padding: 20px;
+            }
+            
+
+        </style>
+    </head>
+    <body>
+        <center><h2>SILAHKAN ISI FORM DIBAWAH INI ! </h2></center>
+        <hr>
+        <!-- ini form untuk input data -->
+       <center><form method="post" id="form_mahasiswa" >
+            <label>NIK</label>
+            <input type="number" name="nik" style="margin: 10px;"><br>
+            <label>Nama  </label>
+            <input type="text" name="nama"><br><br>
+            <label>Jurusan</label>
+            <select name="jurusan">
+                <option value="TI">Teknik Informatika</option>
+                <option value="TK">Teknik Komputer</option>
+                <option value="SI">Sistem Informasi</option>
+                <option value="KA">Komputerisasi Akuntansi</option>
+                <option value="MI">Manajemen Informatika</option>
+            </select>
+        </form>
+        <button id="btn_tampil">Tampilkan</button>
+        <br>
+        <!-- ini alur yang mengantarkkan dari inputan ke database -->
+        <div id="tampil_data"></div>
+        <script>
+              $(document).ready(function(){
+                    $('#tampil_data').load("tampil.php");
+                    $('#btn_tampil').click(function(){
+                        var data = $('#form_mahasiswa').serialize();
+                        $.ajax({
+                            type	: 'POST',
+                            url	: "tambah.php",
+                            data: data,
+                            cache	: false,
+                            success	: function(data){
+                                $('#tampil_data').load("tampil.php");
+                            }
+                        });
+                    });
+              });
+        </script>
+        <br>
+        <!-- ini untuk mencari data yang sudah di input dengan mencari nama jurusan -->
+        <label>Pilih Jurusan : </label>
+        <select name="jurusan" id="jurusan">
+            <option value="TI">Teknik Informatika</option>
+            <option value="TK">Teknik Komputer</option>
+            <option value="SI">Sistem Informasi</option>
+            <option value="KA">Komputerisasi Akuntansi</option>
+            <option value="MI">Manajemen Informatika</option>
+        </select>
+        <hr>
+        <div id="tampil_data"></div>
+        <script>
+              $(document).ready(function(){
+                    $('#tampil_data').load("tampil.php");
+                    $('#jurusan').bind('change', function () {
+                        var jurusan=$("#jurusan").val();
+                        $.ajax({
+                            method: 'POST',
+                            url	: "tampil.php",
+                            data: {jurusan:jurusan},
+                            success	: function(data){
+                                $('#tampil_data').html(data);
+                            }
+                        });
+                    });
+              });
+        </script>
+    </center> 
+    </body>
+</html>
